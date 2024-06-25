@@ -1,0 +1,23 @@
+pragma solidity ^0.8.13;
+
+contract Error {
+    error InsufficientBalance(uint balance, uint withdraw);
+
+    uint bal = address(this).balance;
+
+    function testRevert(uint _withdraw) public view {
+        if (bal < _withdraw) {
+            revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
+        }
+    }
+
+    function testRequire(uint _withdraw) public pure {
+        require(bal > _withdraw, "Insufficient balance");
+    }
+
+    uint public num;
+
+    function testAssert() public view {
+        assert(num == 0);
+    }
+}
