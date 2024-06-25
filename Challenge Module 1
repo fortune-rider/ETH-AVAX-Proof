@@ -7,7 +7,7 @@ contract Error {
 
     function testRevert(uint _withdraw) public view {
         if (bal < _withdraw) {
-            revert InsufficientBalance({balance: bal, withdrawAmount: _withdrawAmount});
+            revert InsufficientBalance({balance: bal, withdraw: _withdraw});
         }
     }
 
