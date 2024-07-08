@@ -1,23 +1,28 @@
 pragma solidity ^0.8.13;
 
-contract Error {
-    error InsufficientBalance(uint balance, uint withdraw);
+contract PromotionToNextGrade {
+    error InsufficientMarks(uint marks);
 
-    uint bal = address(this).balance;
+    uint _marks = address(this).marks;
 
-    function testRevert(uint _withdraw) public view {
-        if (bal < _withdraw) {
-            revert InsufficientBalance({balance: bal, withdraw: _withdraw});
+    function testRevert() public view {
+        if (_marks < 40) {
+            revert InsufficientMarks({marks: _marks});
         }
     }
 
-    function testRequire(uint _withdraw) public pure {
-        require(bal > _withdraw, "Insufficient balance");
+    function testRequire() public pure {
+        require(_marks > 40, "Failed");
     }
 
-    uint public num;
+    string public status;
 
     function testAssert() public view {
-        assert(num == 0);
+        if(_marks>40) {
+            assert(status == "Passed");
+        }
+        else {
+            assert(status == "Failed");
+        }
     }
 }
