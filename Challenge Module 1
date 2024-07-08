@@ -7,6 +7,7 @@ contract PromotionToNextGrade {
 
     function testRevert() public view {
         if (_marks < 40) {
+            
             revert InsufficientMarks({marks: _marks});
         }
     }
@@ -18,11 +19,6 @@ contract PromotionToNextGrade {
     string public status;
 
     function testAssert() public view {
-        if(_marks>40) {
-            assert(status == "Passed");
-        }
-        else {
-            assert(status == "Failed");
-        }
+            assert(_marks > 40);
     }
 }
