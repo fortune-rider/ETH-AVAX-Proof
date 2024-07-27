@@ -1,24 +1,51 @@
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.18;
 
-contract PromotionToNextGrade {
-    error InsufficientMarks(uint marks);
+contract MyToken {
 
-    uint _marks = address(this).marks;
+    constructor() {
+        owner=msg.sender;
+    }
 
-    function testRevert() public view {
-        if (_marks < 40) {
-            
-            revert InsufficientMarks({marks: _marks});
+    //public variables
+    string public name = "simple";
+    string public symbol = "SIMP";
+    uint public totalSupply = 0;
+    address public owner;
+
+    //emits Events
+    event Mint(address indexed to, uint amount);
+    event Burn(address indexed from, uint amount);
+
+    // custom error
+    error InsufficientBalance(uint balance, uint withdrawAmount);
+
+    // mapping variable here
+    mapping(address => uint) public balances;
+
+    //Modifiers
+    modifier onlyOwner {
+        assert(msg.sender==owner);
+        _;
+    }
+    // mint function
+    function mint (address _address, uint _value) public{
+        require(msg.sender==owner, "Not Authorised");
+        totalSupply += _value;
+        balances[_address] += _value;
+        emit Mint(_address, _value);
+    }
+
+    // burn function
+    function burn (address _address, uint _value) public onlyOwner {
+        if(balances[_address] < _value) {
+            revert InsufficientBalance({balance: balances[_address], withdrawAmount: _value});
+        }
+        else{
+            totalSupply -= _value;
+            balances[_address] -= _value;
+            emit Burn(_address, _value);
         }
     }
 
-    function testRequire() public pure {
-        require(_marks > 40, "Failed");
-    }
-
-    string public status;
-
-    function testAssert() public view {
-            assert(_marks > 40);
-    }
 }
