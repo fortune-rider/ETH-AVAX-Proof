@@ -24,12 +24,16 @@ contract MyToken {
     mapping(address => uint) public balances;
 
     //Modifiers
-    modifier onlyOwner {
+    modifier onlyOwner 
+    {
+        //assert()
         assert(msg.sender==owner);
         _;
     }
     // mint function
-    function mint (address _address, uint _value) public{
+    function mint (address _address, uint _value) public
+    {
+        //require()
         require(msg.sender==owner, "Not Authorised");
         totalSupply += _value;
         balances[_address] += _value;
@@ -38,7 +42,9 @@ contract MyToken {
 
     // burn function
     function burn (address _address, uint _value) public onlyOwner {
-        if(balances[_address] < _value) {
+        if(balances[_address] < _value) 
+        {
+            //revert()
             revert InsufficientBalance({balance: balances[_address], withdrawAmount: _value});
         }
         else{
